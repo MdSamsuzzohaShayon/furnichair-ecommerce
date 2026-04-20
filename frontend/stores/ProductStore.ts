@@ -1,6 +1,6 @@
 // const { data: products } = await useFetch('http://localhost:8000/api/products/');
 import { defineStore } from "pinia";
-import { ProductInterface, ProductFilterInterface, ProductFilterOptionalInterface, ProductAddUpdateInterface, CartItemInterface } from '../types/ProductType';
+import type { ProductInterface, ProductFilterInterface, ProductFilterOptionalInterface, ProductAddUpdateInterface, CartItemInterface } from '@/types/ProductType';
 
 
 const initialProductUpdateAdd: ProductAddUpdateInterface = {

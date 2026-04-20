@@ -26,7 +26,7 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
-  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "nuxt-icon", "@nuxt/devtools"],
+  modules: ["@pinia/nuxt", "@nuxtjs/tailwindcss", "nuxt-icon", "@nuxt/devtools", "@nuxt/icon"],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
     head: {
@@ -61,4 +61,9 @@ export default defineNuxtConfig({
     { path: "~/components/contacts", extensions: ["vue"] },
     "~/components",
   ],
+
+  icon: {
+    mode: 'css',
+    cssLayer: 'base'
+  }
 });

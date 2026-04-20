@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { DeliveryPlaceInt } from "~/types/DeliveryPlaceType";
+import type { DeliveryPlaceInt } from "@/types/DeliveryPlaceType";
 
 const useDeliveryPlaceStore = defineStore("deliveryPlace", {
   state: () => ({

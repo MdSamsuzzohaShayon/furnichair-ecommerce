@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { WillContactInterface, ContactFetchedInterface } from "../types/ContactType";
+import type { WillContactInterface, ContactFetchedInterface } from "@/types/ContactType";
 
 const useContactStore = defineStore('contactStore', {
     state: () => ({

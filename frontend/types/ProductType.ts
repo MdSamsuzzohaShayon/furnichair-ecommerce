@@ -1,6 +1,6 @@
-import { ProductCategoryInterface } from "./ProductCategoryType";
+import type { ProductCategoryInterface } from "./ProductCategoryType";
 
-interface ProductBaseInterface {
+export interface ProductBaseInterface {
   id: number;
   title: string;
   price: number;
@@ -10,7 +10,7 @@ interface ProductBaseInterface {
   category: ProductCategoryInterface;
 }
 
-interface ProductAddUpdateInterface {
+export interface ProductAddUpdateInterface {
   id?: number | null;
   title: string;
   price: number | null;
@@ -20,7 +20,7 @@ interface ProductAddUpdateInterface {
   category: number | null;
 }
 
-interface ProductInterface extends ProductBaseInterface {
+export interface ProductInterface extends ProductBaseInterface {
   image1: string;
   image2: string | null;
   image3: string | null;
@@ -28,24 +28,22 @@ interface ProductInterface extends ProductBaseInterface {
   created_at: string;
 }
 
-interface ProductFilterInterface {
+export interface ProductFilterInterface {
   title: string | null;
   price: string | null;
   total_stock: string | null;
   category: number | null;
 }
 
-interface ProductFilterOptionalInterface {
+export interface ProductFilterOptionalInterface {
   title?: string;
   price?: number;
   total_stock?: number;
   category?: number;
 }
 
-interface CartItemInterface {
+export interface CartItemInterface {
   id: string;
   pId: number;
   qty: number;
 }
-
-export { ProductBaseInterface, ProductInterface, ProductFilterInterface, ProductFilterOptionalInterface, CartItemInterface, ProductAddUpdateInterface };

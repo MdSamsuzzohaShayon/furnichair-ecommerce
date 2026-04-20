@@ -1,6 +1,5 @@
 <template>
     <div class="relative index-page-content">
-        <!-- Display slider  -->
         <div class="new-arrival-wrapper" v-for="(na, index) in newArrivals" v-bind:key="index">
             <div class="single-arrival-item relative h-fit md:h-screen flex justify-center items-center flex-col" v-if="selectedProductId === na.id">
                 <div class="background-image w-full absolute top-0 left-0 z-0">
@@ -38,7 +37,6 @@
             <h2 class="mt-8">Fetured</h2>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mt-4">
                 <div v-for="p in featuredProductList">
-                    <!-- <NuxtLink v-bind:to="`/products/${p.id}/`">{{ p.title }}</NuxtLink> -->
                     <ProductCard v-bind:product="p" />
                 </div>
             </div>
@@ -63,14 +61,15 @@
                 </div>
             </div>
         </section>
+
     </div>
 </template>
 
 <script setup lang="ts">
 import '~/assets/css/index.css';
 import { storeToRefs } from 'pinia';
-import useSettingsStore from '../stores/SettingsStore';
-import useProductStore from '../stores/ProductStore';
+import useSettingsStore from '@/stores/SettingsStore';
+import useProductStore from '@/stores/ProductStore';
 
 const settingsStore = useSettingsStore();
 const productStore = useProductStore();
@@ -81,8 +80,6 @@ const { productList } = storeToRefs(productStore);
 await productStore.fetchProducts();
 const newProductList = productList.value.slice(0, 5);
 settingsStore.setFeaturedProducts(newProductList);
-
-
 </script>
 
 <style scoped></style>

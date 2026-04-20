@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { OrderInterface, OrderStatus } from "../types/ProductOrderType";
+import type { OrderInterface, OrderStatus } from "@/types/ProductOrderType";
 
 const useOrderStore = defineStore('orderStore', {
     state: () => ({

@@ -13,10 +13,14 @@ import os
 import logging
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
 
-if os.environ.get("PYENV") != "production":
-    from dotenv import load_dotenv
-    load_dotenv(".env.dev")
+# if os.environ.get("PYENV") != "production":
+#     load_dotenv(".env.dev")
+# else:
+#     load_dotenv()
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -34,6 +38,15 @@ DEBUG = os.environ.get("PYENV") != "production"
 
 
 # print(os.environ.get("DEBUG").upper(), 'True'.upper(), os.environ.get("DEBUG").upper() == 'True'.upper())
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / '../db.sqlite3',
+    }
+}
+
 
 
 # Application definition
@@ -81,6 +94,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
 ]
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'your-domain.com']
 
 ROOT_URLCONF = 'drfecom.urls'
 
@@ -134,6 +149,14 @@ USE_I18N = True
 
 USE_TZ = True
 
+
+LOGGING = {
+    "version": 1,  # the dictConfig format version
+    "disable_existing_loggers": False,  # retain the default loggers
+    "class": "logging.FileHandler",
+    "filename": "console.log",
+    "level": "DEBUG",
+}
 
 
 # Static files (CSS, JavaScript, Images)

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { SocialLinkInterface, NewArrivalInterface, AddressInterface, AdvantagesInt } from "types/SiteSettingsType";
-import { ProductInterface } from 'types/ProductType';
+import type { SocialLinkInterface, NewArrivalInterface, AddressInterface, AdvantagesInt } from "@/types/SiteSettingsType";
+import type { ProductInterface } from '@/types/ProductType';
 
 const useSettingsStore = defineStore('settingsStore', {
     state: () => ({

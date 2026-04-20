@@ -1,9 +1,9 @@
-interface UserSigninInterface {
+export interface UserSigninInterface {
     email: string;
     password: string;
 }
 
-interface UserSignupInterface extends UserSigninInterface {
+export interface UserSignupInterface extends UserSigninInterface {
     first_name: string;
     last_name: string;
     email: string;
@@ -11,7 +11,7 @@ interface UserSignupInterface extends UserSigninInterface {
     confirm_password: string;
 }
 
-interface UserAddressInterface {
+export interface UserAddressInterface {
     id: number;
     city: string;
     country: string;
@@ -20,7 +20,7 @@ interface UserAddressInterface {
     user: number;
 }
 
-interface AddressAddUpdateInterface {
+export interface AddressAddUpdateInterface {
     id?: number;
     city: string;
     country: string;
@@ -29,7 +29,7 @@ interface AddressAddUpdateInterface {
     user: number;
 }
 
-interface UserInfoInterface {
+export interface UserInfoInterface {
     id: number | null;
     email: string | null;
     first_name: string | null;
@@ -41,31 +41,19 @@ interface UserInfoInterface {
     address: UserAddressInterface[];
 }
 
-interface UserTokenInterface{
+export interface UserTokenInterface{
     access: string;
     refresh: string;
 }
 
-interface UserRequestSuccessResInt{
+export interface UserRequestSuccessResInt{
     detail: string;
 }
 
-interface WishlistInt{
+export interface WishlistInt{
     id: number;
     email: string;
     preview: boolean;
     created_at: string;
     updated_at: string;
-}
-
-
-export {
-    UserSignupInterface,
-    UserSigninInterface,
-    UserInfoInterface,
-    UserAddressInterface,
-    AddressAddUpdateInterface,
-    UserTokenInterface,
-    UserRequestSuccessResInt,
-    WishlistInt
 }

@@ -1,11 +1,11 @@
-interface SocialLinkInterface{
+export interface SocialLinkInterface{
     id: number,
     name: string,
     color: string,
     link: string
 }
 
-interface NewArrivalInterface{
+export interface NewArrivalInterface{
     id: number;
     title: string;
     category: number;
@@ -13,22 +13,15 @@ interface NewArrivalInterface{
     image1: string
 }
 
-interface AddressInterface{
+export interface AddressInterface{
     id: number;
     name: string;
     value: string;
 }
 
-interface AdvantagesInt{
+export interface AdvantagesInt{
     id: number;
     title: string;
     desc: string;
     icon: string
-}
-
-export {
-    SocialLinkInterface,
-    NewArrivalInterface,
-    AddressInterface,
-    AdvantagesInt
 }

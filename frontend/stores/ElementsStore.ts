@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { MenuInterface, RightMenuInterface, SidebarMenuInterface } from "types/ElementsSettingType";
+import type { MenuInterface, RightMenuInterface, SidebarMenuInterface } from "@/types/ElementsSettingType";
 
 const useElementStore = defineStore("elementsStore", {
     state: () => ({

@@ -1,4 +1,4 @@
-interface ProductCategoryInterface {
+export interface ProductCategoryInterface {
     id: number;
     name: string;
     image: string;
@@ -12,6 +12,3 @@ interface ProductCategoryInterface {
 }
 
 
-export {
-    ProductCategoryInterface
-}

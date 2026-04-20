@@ -1,14 +1,14 @@
-import { UserAddressInterface } from "./UserType";
-import { ProductInterface } from './ProductType';
+import type { UserAddressInterface } from "./UserType";
+import type { ProductInterface } from './ProductType';
 
-enum OrderStatus {
+export enum OrderStatus {
     PENDING = "PG",
     SHIPPING = "SG",
     COMPLETED = "CD",
     CANCELED = "CL",
 }
 
-interface OrderInterface {
+export interface OrderInterface {
     id: number;
     status: OrderStatus.PENDING | OrderStatus.SHIPPING | OrderStatus.COMPLETED | OrderStatus.CANCELED;
     is_paid: boolean;
@@ -18,7 +18,7 @@ interface OrderInterface {
     total: number;
 }
 
-interface OrganizedOrderInterface {
+export interface OrganizedOrderInterface {
     id: number;
     status: string;
     is_paid: boolean;
@@ -26,11 +26,4 @@ interface OrganizedOrderInterface {
     address: UserAddressInterface;
     quantity: number;
     total: number;
-}
-
-
-export {
-    OrderStatus,
-    OrderInterface,
-    OrganizedOrderInterface
 }

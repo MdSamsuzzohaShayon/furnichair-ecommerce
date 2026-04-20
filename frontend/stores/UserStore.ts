@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { UserSignupInterface, UserSigninInterface, UserInfoInterface, UserAddressInterface, AddressAddUpdateInterface, WishlistInt } from '../types/UserType';
+import type { UserSignupInterface, UserSigninInterface, UserInfoInterface, UserAddressInterface, AddressAddUpdateInterface, WishlistInt } from '@/types/UserType';
 
 const useUserStore = defineStore('userStore', {
     state: () => ({

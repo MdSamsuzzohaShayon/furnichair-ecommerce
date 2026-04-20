@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { WishlistInterface } from "../types/WishlistType";
+import type { WishlistInterface } from "@/types/WishlistType";
 
 const useWishlistStore = defineStore('wishlistStore', {
     state: () => ({

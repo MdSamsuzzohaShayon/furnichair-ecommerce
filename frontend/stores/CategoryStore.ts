@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ProductCategoryInterface } from "../types/ProductCategoryType";
+import type { ProductCategoryInterface } from "@/types/ProductCategoryType";
 
 const useCategoryStore = defineStore("categoryStore", {
   state: () => ({

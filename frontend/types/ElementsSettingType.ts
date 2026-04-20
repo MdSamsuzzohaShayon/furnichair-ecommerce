@@ -1,10 +1,10 @@
-interface MenuInterface {
+export interface MenuInterface {
     id: number;
     text: string;
     link: string;
 }
 
-interface RightMenuInterface {
+export interface RightMenuInterface {
     id: number;
     name: string;
     text: string;
@@ -13,14 +13,9 @@ interface RightMenuInterface {
 }
 
 
-interface SidebarMenuInterface {
+export interface SidebarMenuInterface {
     id: number;
     name: string;
     text: string;
 }
 
-export {
-    MenuInterface,
-    RightMenuInterface,
-    SidebarMenuInterface
-};
