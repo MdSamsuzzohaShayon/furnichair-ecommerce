@@ -4,7 +4,8 @@
       <li v-for="delivery in deliveryPlaceList" class="flex justify-between bg-white mb-2 p-2">
         <p>{{ delivery.place }} - ৳{{ delivery.price }}</p>
         <div class="flex gap-2">
-          <Icon size="20" name="mdi:file-document-edit-outline" color="blue" v-on:click.prevent="updateDeliveryHandler(delivery.id)" />
+          <Icon size="20" name="mdi:file-document-edit-outline" color="blue"
+            v-on:click.prevent="updateDeliveryHandler(delivery.id)" />
           <Icon size="20" name="lucide:trash-2" color="red" v-on:click.prevent="deleteDeliveryHandler(delivery.id)" />
         </div>
       </li>
@@ -14,7 +15,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import useDeliveryPlaceStore from "../../stores/DeliveryPlaceStore";
+import useDeliveryPlaceStore from "@/stores/DeliveryPlaceStore";
 
 const deliveryPlaceStore = useDeliveryPlaceStore();
 
@@ -30,13 +31,19 @@ const deleteDeliveryHandler = async (deliveryId: number) => {
   // const token = useCookie('token');
   // if (!token.value) return null;
   // // @ts-ignore
-  // const { access: accessToken } = token.value;
+  const accessToken = useCookie(ACCESS_TOKEN);
+
+  if (!accessToken.value) {
+    console.error('There is no access token');
+    return;
+
+  }
   // // http://localhost:8000/api/products/categories/4/delete/
   // const { data: catInfo, error: catError, refresh: refreshRequest, status: catStatus } = await useFetch(`${BACKEND_URL}/products/categories/${catId}/delete/`, {
   //     method: "DELETE",
   //     key: `${catId}`,
   //     headers: {
-  //         "Authorization": `Bearer ${accessToken}`
+  //         "Authorization": `Bearer ${accessToken.value}`
   //     }
   // });
   // // await refreshRequest();

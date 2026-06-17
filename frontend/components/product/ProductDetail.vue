@@ -2,23 +2,27 @@
     <div class="container mx-auto px-2">
         <div class="flex justify-between items-center md:items-start gap-4 flex-col md:flex-row">
             <div class="w-full md:w-3/6">
-                <img :src="state.previewImage ? CLOUDINARY_BASE_URL + '/' + state.previewImage : CLOUDINARY_BASE_URL + '/' + product.image1" v-bind:alt="product.title"
-                    class="mx-auto my-7">
+                <img :src="state.previewImage ? CLOUDINARY_BASE_URL + '/' + state.previewImage : CLOUDINARY_BASE_URL + '/' + product.image1"
+                    v-bind:alt="product.title" class="mx-auto my-7">
             </div>
             <div class="w-full md:w-3/6 text-teal-950">
                 <h1 class="text-4xl my-7">{{ product.title }}</h1>
                 <div class="product-images flex justify-start gap-4">
-                    <img v-if="product.image1 && product.image1 !== null" v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image1"
-                        v-bind:alt="product.title" class="w-20 h-20 border-4 border-teal-100"
+                    <img v-if="product.image1 && product.image1 !== null"
+                        v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image1" v-bind:alt="product.title"
+                        class="w-20 h-20 border-4 border-teal-100"
                         v-on:click.prevent="imgChangeHandler(product.image1)">
-                    <img v-if="product.image2 && product.image2 !== null" v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image2"
-                        v-bind:alt="product.title" class="w-20 h-20 border-4 border-teal-100"
+                    <img v-if="product.image2 && product.image2 !== null"
+                        v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image2" v-bind:alt="product.title"
+                        class="w-20 h-20 border-4 border-teal-100"
                         v-on:click.prevent="imgChangeHandler(product.image2)">
-                    <img v-if="product.image3 && product.image3 !== null" v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image3"
-                        v-bind:alt="product.title" class="w-20 h-20 border-4 border-teal-100"
+                    <img v-if="product.image3 && product.image3 !== null"
+                        v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image3" v-bind:alt="product.title"
+                        class="w-20 h-20 border-4 border-teal-100"
                         v-on:click.prevent="imgChangeHandler(product.image3)">
-                    <img v-if="product.image4 && product.image4 !== null" v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image4"
-                        v-bind:alt="product.title" class="w-20 h-20 border-4 border-teal-100"
+                    <img v-if="product.image4 && product.image4 !== null"
+                        v-bind:src="CLOUDINARY_BASE_URL + '/' + product.image4" v-bind:alt="product.title"
+                        class="w-20 h-20 border-4 border-teal-100"
                         v-on:click.prevent="imgChangeHandler(product.image4)">
                 </div>
                 <h2 class="mt-4" v-if="product.discount_price && product.discount_price > 0"> ৳{{ product.price }}
@@ -58,13 +62,12 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useProductStore from '../../stores/ProductStore';
-import useElementStore from '../../stores/ElementsStore';
-import useUserStore from '../../stores/UserStore';
-import useOrderStore from '../../stores/OrderStore';
-import { OrderInterface } from '../../types/ProductOrderType';
+import useProductStore from '@/stores/ProductStore';
+import useElementStore from '@/stores/ElementsStore';
+import useUserStore from '@/stores/UserStore';
+import useOrderStore from '@/stores/OrderStore';
+import type { OrderInterface } from '@/types/ProductOrderType';
 
-console.log(styles);
 
 
 const { product } = defineProps(['product']);
@@ -91,12 +94,18 @@ const addToCartHandler = (e: Event) => {
 }
 const buyNowHandler = async (e: Event) => {
     e.preventDefault();
-    const token = useCookie('token');
-    if (!token.value) {
-        return navigateTo('/user/signin/');
+    const accessToken = useCookie(ACCESS_TOKEN);
+    if (!accessToken.value) {
+        console.error('There is no access token');
+        return;
+
     }
-    // @ts-ignore
-    const { access: accessToken } = token.value;
+
+    if (!userInfo.value.address) {
+        console.error("No address found");
+
+        return;
+    }
     const { data: orderData, status: orderStatus, error: orderErrors } = await useFetch<OrderInterface>(`${BACKEND_URL}/orders/new/`, {
         method: "POST",
         body: {
@@ -105,7 +114,7 @@ const buyNowHandler = async (e: Event) => {
             address: userInfo.value.address[0].id,
         },
         headers: {
-            "Authorization": `Bearer ${accessToken}`
+            "Authorization": `Bearer ${accessToken.value}`
         }
     });
     if (orderStatus.value === 'success' && orderData.value) {
@@ -113,7 +122,6 @@ const buyNowHandler = async (e: Event) => {
         navigateTo("/user/dashboard/");
     } else {
         console.log(orderErrors.value);
-        // @ts-ignore
         elementsStore.setErrorMessageList(Object.entries(orderErrors.value));
     }
 

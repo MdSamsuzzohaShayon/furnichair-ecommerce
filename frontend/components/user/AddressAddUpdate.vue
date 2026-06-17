@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useUserStore from '../../stores/UserStore';
-import useElementsStore from '../../stores/ElementsStore';
+import useUserStore from '@/stores/UserStore';
+import useElementsStore from '@/stores/ElementsStore';
 
 const userStore = useUserStore();
 const elementStore = useElementsStore();
@@ -43,23 +43,26 @@ const { addAddress } = storeToRefs(elementStore);
 
 const addressAddUpdateHandler = async (e: Event) => {
     // console.log({ ...userAddressAddOrUpdate.value });
-    const token = useCookie('token');
-    if (!token.value) return;
-    // @ts-ignore
-    const { access: accessToken } = token.value;
+    const accessToken = useCookie(ACCESS_TOKEN);
+    if (!accessToken.value) {
+        console.error('There is no access token');
+        return;
+
+    }
 
     const organizeData = {
         address: { ...userAddressAddOrUpdate.value }
     }
+    const tokenVal = accessToken.value;
+    const userId = userInfo.value.id;
     const { data: updateAddress, error: errorFetch, status } = await useFetch(`${BACKEND_URL}/accounts/${userInfo.value.id}/update/`, {
         method: "PUT",
         headers: {
-            "Authorization": `Bearer ${accessToken}`
+            "Authorization": `Bearer ${accessToken.value}`
         },
         body: organizeData
     });
     if (status.value === 'success' && updateAddress.value) {
-        // @ts-ignore
         userStore.setUserNewAddress(userAddressAddOrUpdate.value)
         elementStore.setShowAddOrAddress(true);
     } else {

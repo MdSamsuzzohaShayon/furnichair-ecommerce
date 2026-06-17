@@ -1,5 +1,7 @@
+import { ACCESS_TOKEN } from "~/utils/constant";
+
 export default defineNuxtRouteMiddleware((to, from) => {
-    const token = useCookie('token');
+    const token = useCookie(ACCESS_TOKEN);
     
     
 

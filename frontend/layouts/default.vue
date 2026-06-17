@@ -39,7 +39,8 @@
                                     <Icon v-bind:name="rm.name" size="20" v-bind:color="rm.color" />
                                 </NuxtLink>
                                 <Icon v-bind:name="rm.name" size="20" v-bind:color="rm.color"
-                                    v-else-if="rm.id === 4 && isAuthenticated === true" v-on:click.prevent="logoutHandler" />
+                                    v-else-if="rm.id === 4 && isAuthenticated === true"
+                                    v-on:click.prevent="logoutHandler" />
                             </li>
                         </ul>
                     </nav>
@@ -51,8 +52,9 @@
                             <button type="submit" class="px-4">
                                 <Icon size="20" name="simple-line-icons:magnifier" class="text-teal-950" />
                             </button>
-                            <input type="text" id="search-text" class="bg-real-100 text-teal-950 outline-0 text-3xl capitalize"
-                                placeholder="Search...." ref="searchInputEl" v-model="state.q">
+                            <input type="text" id="search-text"
+                                class="bg-real-100 text-teal-950 outline-0 text-3xl capitalize" placeholder="Search...."
+                                ref="searchInputEl" v-model="state.q">
                         </form>
                         <div class="close-button">
                             <Icon name="grommet-icons:close" size="20" class="text-teal-950"
@@ -63,7 +65,7 @@
             </header>
 
             <div class="whole-display-overflow absolute h-full w-full bg-teal-950 z-10 opacity-70 left-0 top-0 "
-            v-bind:class="shadowOverflow ? 'block' : 'hidden'"></div>
+                v-bind:class="shadowOverflow ? 'block' : 'hidden'"></div>
 
 
             <slot />
@@ -181,11 +183,29 @@ const displaySearchBarHandler = (e: Event) => {
 }
 
 const logoutHandler = async (e: Event) => {
-    const token = useCookie('token');
-    token.value = null;
+    e.preventDefault();
+
+    const accessToken = useCookie<string | null>(ACCESS_TOKEN, {
+        path: "/",
+        sameSite: "lax",
+        secure: import.meta.env.PROD,
+    });
+
+    const refreshToken = useCookie<string | null>(REFRESH_TOKEN, {
+        path: "/",
+        sameSite: "lax",
+        secure: import.meta.env.PROD,
+    });
+
+    // Delete cookies
+    accessToken.value = null;
+    refreshToken.value = null;
+
+    // Update state
     userStore.setIsAuthenticated(false);
-    await navigateTo('/');
-}
+
+    await navigateTo("/");
+};
 
 
 const searchHandler = async (e: Event) => {
@@ -228,29 +248,30 @@ const wishlistEmailChangeHandler = (e: Event) => {
 
 
 onMounted(async () => {
-    const token = useCookie("token");
+    const accessToken = useCookie(ACCESS_TOKEN);
+    const refreshToken = useCookie(REFRESH_TOKEN);
+    if (!refreshToken.value) {
+        console.error('There is no access token');
+        return;
+    }
 
     const fetchAtBeginning = []
-    if (!token || !token.value) {
+    if (!accessToken || !accessToken.value) {
         userStore.setIsAuthenticated(false);
     } else {
         userStore.setIsAuthenticated(true);
         const userInfo = localStorage.getItem('userInfo');
         if (userInfo) userStore.setUserInfo(JSON.parse(userInfo));
 
-        // @ts-ignore
-        const { access: accessBefore, refresh: refreshBefore } = token.value;
 
-        if (accessBefore && refreshBefore) {
-            await userStore.setRefreshToken(refreshBefore);
-            const tokenUpdate = useCookie("token");
-            // @ts-ignore
-            const { access: accessAfter, refresh: refreshAfter } = tokenUpdate.value;
-            fetchAtBeginning.push(userStore.fetchUser(accessAfter));
+        if (refreshToken) {
+            await userStore.setRefreshToken(refreshToken.value);
+
+            fetchAtBeginning.push(userStore.fetchUser(accessToken.value));
 
             // Refresh token in every 9 minuts
             refreshTokenCycle = setInterval(async () => {
-                await userStore.setRefreshToken(refreshBefore);
+                if (refreshToken.value) await userStore.setRefreshToken(refreshToken.value);
             }, TOKEN_REFRESH_TIME);
         }
     }

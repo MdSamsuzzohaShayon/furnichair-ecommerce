@@ -8,8 +8,6 @@
                     <img v-bind:src="CLOUDINARY_BASE_URL + '/' + findProductById(c.pId)?.image1" v-bind:alt="product?.title" class="w-full md:w-44 h-44 object-fit object-cover" loading="lazy" >
                     <h3 class="font-bold mt-4 md:mt-0 text-lg">{{ product?.title }}</h3>
                     <div class="seg-1 flex flex-col justify-center items-center h-full">
-                        <!-- <p class="w-fit">Total Price - ৳{{ product.discount_price ?( product.discount_price + product.category.shipping_charge) * c.qty :
-                            product.price * c.qty }}</p> -->
                         <div class="q-controller flex items-center justify-center">
                             <button class="bg-none text-teal-50 border-0 px-5 py-2" v-on:click.prevent="qtyChange(true)">
                                 <Icon name="ep:plus" size="20" color="blue" />
@@ -38,7 +36,8 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 import useProductStore from '../../stores/ProductStore';
-import { ProductInterface } from '../../types/ProductType';
+import type { IProduct } from '~/types';
+
 
 const productStore = useProductStore();
 
@@ -48,7 +47,7 @@ productStore.fetchCartFromLocalStorage();
 const { cartList, productList } = storeToRefs(productStore);
 
 const findProductById = (pId: number) => {
-    const findProduct: ProductInterface | undefined = productList.value.find((p: ProductInterface) => p.id === pId);
+    const findProduct: IProduct | undefined = productList.value.find((p) => p.id === pId);
     if (findProduct) return findProduct;
     return null;
 }

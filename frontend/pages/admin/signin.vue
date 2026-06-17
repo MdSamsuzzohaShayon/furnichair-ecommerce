@@ -5,8 +5,8 @@
 </template>
 
 <script setup>
-// import { storeToRefs } from 'pinia';
-// import useUserStore from '../../stores/UserStore';
+import { storeToRefs } from 'pinia';
+import useUserStore from '@/stores/UserStore';
 
 // Meta
 definePageMeta({
@@ -15,19 +15,19 @@ definePageMeta({
 });
 
 
-// const userStore = useUserStore();
+const userStore = useUserStore();
 
-// const { isAuthenticated, userInfo } = storeToRefs(userStore);
+const { isAuthenticated, userInfo } = storeToRefs(userStore);
 
-// onMounted(() => {
-//     if (isAuthenticated.value === true) {
-//         if (userInfo.value.is_admin === true || userInfo.value.is_staff === true){
-//             navigateTo('/admin/');
-//         }else{
-//             navigateTo('/user/dashboard');
-//         }
-//     }
-// });
+onMounted(() => {
+    if (isAuthenticated.value === true) {
+        if (userInfo.value.is_admin === true || userInfo.value.is_staff === true){
+            navigateTo('/admin/');
+        }else{
+            navigateTo('/user/dashboard');
+        }
+    }
+});
 </script>
 
 <style lang="scss" scoped></style>

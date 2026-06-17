@@ -39,7 +39,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-import useProductStore from '../../stores/ProductStore';
+import useProductStore from '@/stores/ProductStore';
 
 const productsStore = useProductStore();
 

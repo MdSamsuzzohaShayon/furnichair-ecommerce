@@ -144,11 +144,8 @@ class UserUpdateView( GeneralUserPermissionMixin, UpdateAPIView):
     def perform_update(self, serializer):
         user = self.get_object()
         address_data = self.request.data.get('address', {})
-        # print("Address -> ",address_data)
 
         instance = serializer.save()
-
-        # print("perform_update -> UserUpdateView", user.id)
         address_data['user'] = user.id
 
         # Update or create address

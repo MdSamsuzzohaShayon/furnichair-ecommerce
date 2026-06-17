@@ -15,11 +15,8 @@
     <!-- deliveryPlaceList -->
     <div class="input-group w-full">
       <label for="delivery-place" class="text-teal-950/50">Districe</label>
-      <select
-        id="delivery-place"
-        v-on:change.prevent="deliveryPlaceChangeHandler"
-        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
-      >
+      <select id="delivery-place" v-on:change.prevent="deliveryPlaceChangeHandler"
+        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50">
         <option v-for="delivery in deliveryPlaceList" v-bind:value="delivery.id">{{ delivery.place }}</option>
       </select>
     </div>
@@ -48,7 +45,7 @@ const state = reactive({
   cityOfUser: '',
   deliveryCityPrice: 0,
   productQuantity: 1,
-  totalPayment : 0
+  totalPayment: 0
 });
 
 const productStore = useProductStore();
@@ -67,40 +64,43 @@ const { productList } = storeToRefs(productStore);
 // console.log(cId);
 
 const cart = productStore.getCartById(cId);
-const initialValueSet=()=>{
-    if (cart?.pId) {
-      const findProduct = productList.value.find((p) => p.id === cart.pId);
-      if (findProduct) {
-        // @ts-ignore
-        state.itemTotal = findProduct.discount_price ? parseInt(findProduct.discount_price, 10) : parseInt(findProduct.price, 10);
-        state.shipping_charge = findProduct.category.shipping_charge;    
-        
-        state.totalPayment = state.itemTotal + (( state.shipping_charge + state.deliveryCityPrice) * state.productQuantity);
-        deliveryPlaceStore.fetchAllPlaces()
-      }
+const initialValueSet = () => {
+  if (cart?.pId) {
+    const findProduct = productList.value.find((p) => p.id === cart.pId);
+    if (findProduct) {
+      // @ts-ignore
+      state.itemTotal = findProduct.discount_price ? parseInt(findProduct.discount_price, 10) : parseInt(findProduct.price, 10);
+      state.shipping_charge = findProduct.category.shipping_charge;
+
+      state.totalPayment = state.itemTotal + ((state.shipping_charge + state.deliveryCityPrice) * state.productQuantity);
+      deliveryPlaceStore.fetchAllPlaces()
     }
-    // fetchOrders
+  }
+  // fetchOrders
 }
 
 initialValueSet();
 
-const deliveryPlaceChangeHandler=(e: Event)=>{
-    // console.log(e.target.value);
-    const optionEl = e.target as HTMLSelectElement;
-    const findPlace = deliveryPlaceList.value.find((delivery)=> delivery.id === parseInt(optionEl.value, 10));
-    if(!findPlace) return;
-    state.deliveryCityPrice = findPlace.price;
+const deliveryPlaceChangeHandler = (e: Event) => {
+  // console.log(e.target.value);
+  const optionEl = e.target as HTMLSelectElement;
+  const findPlace = deliveryPlaceList.value.find((delivery) => delivery.id === parseInt(optionEl.value, 10));
+  if (!findPlace) return;
+  state.deliveryCityPrice = findPlace.price;
 }
 
-const addAddressHandler = (e: Event) => {};
+const addAddressHandler = (e: Event) => { };
 
 const payAndOrderHandler = async (e: Event) => {
   e.preventDefault();
 
   // Redirect to order page
-  const token = useCookie("token");
-  // @ts-ignore
-  const { access: accessToken } = token.value;
+  const accessToken = useCookie(ACCESS_TOKEN);
+  if (!accessToken.value) {
+    console.error('There is no access token');
+    return;
+
+  }
   if (!cart) return elementsStore.setErrorMessageList(["Product not found!"]);
   const { data: orderData, status: orderStatus } = await useFetch<OrderInterface>(`${BACKEND_URL}/orders/new/`, {
     key: cId,
@@ -111,7 +111,7 @@ const payAndOrderHandler = async (e: Event) => {
       address: userInfo.value.address[0].id,
     },
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken.value}`,
     },
   });
   if (orderStatus.value === "success" && orderData.value) {

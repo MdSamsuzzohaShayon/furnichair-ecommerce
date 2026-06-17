@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useElementStore from '../../stores/ElementsStore';
+import useElementStore from '@/stores/ElementsStore';
 
 const elementStore = useElementStore();
 

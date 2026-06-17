@@ -18,3 +18,13 @@
  - Watch SSLCommerz tutorial
  - Check if the token is invalid - make a request with refresh token to get new access token
  
+
+### To do (frontend + backend)
+ - Fix issues with access token and refresh token
+ - Remove all @ts-ignore
+ - Make it proper static type of type script
+ - Make compitable for PostgreSQL and SQlite
+ - If access token expired then rotate token with refresh token
+ - Logout properly
+ - Run everything with docker
+ - Take screen shorts of all projects and use them in freelancing marketplaces

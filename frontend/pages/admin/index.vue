@@ -60,11 +60,11 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-import useElementStore from '../../stores/ElementsStore';
-import useProductStore from '../../stores/ProductStore';
-import useOrderStore from '../../stores/OrderStore';
-import useUserStore from '../../stores/UserStore';
-import useDeliveryPlaceStore from '../../stores/DeliveryPlaceStore';
+import useElementStore from '@/stores/ElementsStore';
+import useProductStore from '@/stores/ProductStore';
+import useOrderStore from '@/stores/OrderStore';
+import useUserStore from '@/stores/UserStore';
+import useDeliveryPlaceStore from '@/stores/DeliveryPlaceStore';
 
 // Meta
 definePageMeta({
@@ -80,17 +80,18 @@ const deliveryPlaceStore = useDeliveryPlaceStore();
 
 const { dashboardSidebar, selectedDSID, errorMessageList, successMessageList, addProduct, showProductList } = storeToRefs(elementStore);
 
-const token = useCookie("token");
+const accessToken = useCookie(ACCESS_TOKEN);
+if (!accessToken.value) {
+    console.error('There is no access token');
+}
 
 const fetchAtBeginning = [];
 fetchAtBeginning.push(productsStore.fetchProducts());
 fetchAtBeginning.push(deliveryPlaceStore.fetchAllPlaces());
 
-if (token.value) {
-    // @ts-ignore
-    const { access } = token.value;
-    fetchAtBeginning.push(orderStore.fetchAllOrders(access));
-    fetchAtBeginning.push(userStore.fetchAllUser(access));
+if (accessToken.value) {
+    fetchAtBeginning.push(orderStore.fetchAllOrders(accessToken.value));
+    fetchAtBeginning.push(userStore.fetchAllUser(accessToken.value));
     // Check if the token is invalid - make a request with refresh token to get new access token
 }
 await Promise.all(fetchAtBeginning);

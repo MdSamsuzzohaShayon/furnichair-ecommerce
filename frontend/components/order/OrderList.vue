@@ -19,13 +19,18 @@
           <td class="p-2 text-center border border-teal-900/50">{{ order.product }}</td>
           <td class="p-2 text-center border border-teal-900/50 capitalize">{{ order.status }}</td>
           <td class="p-2 text-center border border-teal-900/50">{{ order.quantity }}</td>
-          <td class="p-2 text-center border border-teal-900/50">{{ `${order.address.area}, ${order.address.city}, ${order.address.phone}` }}</td>
+          <td class="p-2 text-center border border-teal-900/50">{{ `${order.address.area}, ${order.address.city},
+            ${order.address.phone}` }}</td>
           <td class="p-2 text-center border border-teal-900/50">{{ order.total }}</td>
           <td class="p-2 text-center border border-teal-900/50">
-            <p class="cursor-pointer text-red-900" v-if="order.status === 'PENDING'" v-on:click.prevent="cancelOrderHandler(order.id)">Cancel</p>
-            <NuxtLink v-bind:to="`#`"><p class="cursor-pointer text-teal-900">View</p> </NuxtLink>
+            <p class="cursor-pointer text-red-900" v-if="order.status === 'PENDING'"
+              v-on:click.prevent="cancelOrderHandler(order.id)">Cancel</p>
+            <NuxtLink v-bind:to="`#`">
+              <p class="cursor-pointer text-teal-900">View</p>
+            </NuxtLink>
             <!-- <Icon class="pr-2" size="20" name="bytesize:eye" color="teal" /> -->
-            <p v-if="userInfo.is_staff" class="cursor-pointer text-teal-900" v-on:click.prevent="updateOrderHandler(order.id)">Update</p>
+            <p v-if="userInfo.is_staff" class="cursor-pointer text-teal-900"
+              v-on:click.prevent="updateOrderHandler(order.id)">Update</p>
             <!-- <Icon v-if="userInfo.is_staff" class="pr-2" size="20" name="line-md:edit" v-on:click.prevent="updateOrderHandler(order.id)"
                             color="teal" /> -->
           </td>
@@ -39,10 +44,10 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 
-import useOrderStore from "../../stores/OrderStore";
-import useProductStore from "../../stores/ProductStore";
-import useUserStore from "../../stores/UserStore";
-import { OrderStatus, OrganizedOrderInterface, OrderInterface } from "../../types/ProductOrderType";
+import useOrderStore from "@/stores/OrderStore";
+import useProductStore from "@/stores/ProductStore";
+import useUserStore from "@/stores/UserStore";
+import type { OrderStatus, OrganizedOrderInterface, OrderInterface } from "@/types/ProductOrderType";
 
 
 const ordersStore = useOrderStore();
@@ -86,9 +91,14 @@ const limitUpdate = (limit: number) => {
 // Pagination logic end 
 
 const cancelOrderHandler = async (oId: number | null) => {
-  const token = useCookie("token");
-  // @ts-ignore
-  const { access: accessToken } = token.value;
+  const accessToken = useCookie(ACCESS_TOKEN);
+
+  if (!accessToken.value) {
+    console.error('There is no access token');
+    return;
+
+  }
+
   const {
     data: orderData,
     error: orderError,
@@ -98,7 +108,7 @@ const cancelOrderHandler = async (oId: number | null) => {
     key: oId + "-" + new Date().getSeconds() + "-" + new Date().getMilliseconds(),
     method: "PUT",
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken.value}`,
     },
   });
   if (orderStatus.value === "success" && orderData.value) {

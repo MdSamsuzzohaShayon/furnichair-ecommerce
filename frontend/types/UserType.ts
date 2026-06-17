@@ -46,6 +46,12 @@ export interface UserTokenInterface{
     refresh: string;
 }
 
+export interface ISignInResponse {
+    access: string;
+    refresh: string;
+}
+
+
 export interface UserRequestSuccessResInt{
     detail: string;
 }

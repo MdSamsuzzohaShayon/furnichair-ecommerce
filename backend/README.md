@@ -72,6 +72,12 @@
  coverage run -m pytest
  pytest --cov
  ```
+ - For seeding data
+```
+python manage.py seed --flush
+```
+### See documentation
+ __http://127.0.0.1:8000/api/docs/__
 
 ### Inspirations
  - https://99grid.com/

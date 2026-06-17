@@ -13,7 +13,8 @@
                     placeholder="Price" v-model="productUpdateAdd.price">
             </div>
             <div class="input-group w-full">
-                <input v-bind:required="productUpdate === false ? true : false" type="number" id="product-discount_price"
+                <input v-bind:required="productUpdate === false ? true : false" type="number"
+                    id="product-discount_price"
                     class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50 remove-arrow"
                     placeholder="Discount Price" v-model="productUpdateAdd.discount_price">
             </div>
@@ -23,7 +24,8 @@
                     placeholder="Total Stock" v-model="productUpdateAdd.total_stock">
             </div>
             <div class="input-group w-full">
-                <textarea v-bind:required="productUpdate === false ? true : false" type="number" id="product-description"
+                <textarea v-bind:required="productUpdate === false ? true : false" type="number"
+                    id="product-description"
                     class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
                     placeholder="Description" v-model="productUpdateAdd.description" cols="3" />
             </div>
@@ -51,24 +53,24 @@
                     class="w-full bg-white text-teal-950/50  px-3 py-2 border border-teal-950/25 block"> <span>
                         <Icon name="ph:image" size="20" />
                     </span> {{ state.image2Name !== '' ? state.image2Name : 'Image 2' }}</label>
-                <input type="file" id="product-image2"
-                    name="image2file" ref="uploadImage2" class="hidden" v-on:input="uploadFileChangeHandler">
+                <input type="file" id="product-image2" name="image2file" ref="uploadImage2" class="hidden"
+                    v-on:input="uploadFileChangeHandler">
             </div>
             <div class="input-group w-full">
                 <label for="product-image3"
                     class="w-full bg-white text-teal-950/50  px-3 py-2 border border-teal-950/25 block"> <span>
                         <Icon name="ph:image" size="20" />
                     </span> {{ state.image3Name !== '' ? state.image3Name : 'Image 3' }}</label>
-                <input type="file" id="product-image3"
-                    name="image3file" ref="uploadImage3" class="hidden" v-on:input="uploadFileChangeHandler">
+                <input type="file" id="product-image3" name="image3file" ref="uploadImage3" class="hidden"
+                    v-on:input="uploadFileChangeHandler">
             </div>
             <div class="input-group w-full">
                 <label for="product-image4"
                     class="w-full bg-white text-teal-950/50  px-3 py-2 border border-teal-950/25 block"> <span>
                         <Icon name="ph:image" size="20" />
                     </span> {{ state.image4Name !== '' ? state.image4Name : 'Image 4' }}</label>
-                <input type="file" id="product-image4"
-                    name="image4file" ref="uploadImage4" class="hidden" v-on:input="uploadFileChangeHandler">
+                <input type="file" id="product-image4" name="image4file" ref="uploadImage4" class="hidden"
+                    v-on:input="uploadFileChangeHandler">
             </div>
             <!-- <div class="input-group w-full">
                 <input v-bind:required="productUpdate === false ? true : false" type="file" id="product-image4"
@@ -80,9 +82,11 @@
 
             <!-- Submit  -->
             <div class="input-group w-full">
-                <button class="bg-teal-900 text-teal-50 border-1 border-teal-950 px-5 py-2 w-full font-bold" type="submit">
+                <button class="bg-teal-900 text-teal-50 border-1 border-teal-950 px-5 py-2 w-full font-bold"
+                    type="submit">
                     {{ productUpdate ? 'Update' : 'Add' }}</button>
-                <button class="bg-red-900 text-red-50 border-1 border-red-950 px-5 py-2 w-full font-bold mt-4" v-on:click.prevent="cancelHandler"> Cancel</button>
+                <button class="bg-red-900 text-red-50 border-1 border-red-950 px-5 py-2 w-full font-bold mt-4"
+                    v-on:click.prevent="cancelHandler"> Cancel</button>
             </div>
         </form>
         <p class="text-red-900 px-4 py-2 capitalize" v-for="message in errorMessageList">{{ message }}</p>
@@ -92,11 +96,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useElementStore from '../../stores/ElementsStore';
-import useProductStore from '../../stores/ProductStore';
-import useCategoryStore from '../../stores/CategoryStore';
-import { ProductInterface } from '../../types/ProductType';
-import { BACKEND_URL } from '../../utils/keys';
+import useElementStore from '@/stores/ElementsStore';
+import useProductStore from '@/stores/ProductStore';
+import useCategoryStore from '@/stores/CategoryStore';
+import type { ProductInterface } from '@/types/ProductType';
+import { BACKEND_URL } from '@/utils/keys';
 
 const uploadImage1 = ref(null);
 const uploadImage2 = ref(null);
@@ -130,7 +134,7 @@ const uploadFileChangeHandler = (e: Event) => {
     }
 }
 
-const cancelHandler=(e: Event)=>{
+const cancelHandler = (e: Event) => {
     elementStore.setShowProductList(true);
 }
 
@@ -153,9 +157,20 @@ const productAddHandler = async (e: Event) => {
     //     console.log(`${pair[0]}, ${pair[1]}`);
     // }
 
-    const token = useCookie('token');
-    // @ts-ignore
-    const { access: accessToken } = token.value;
+    const accessToken = useCookie(ACCESS_TOKEN);
+
+    if (!accessToken.value) {
+        console.error('There is no access token');
+        return;
+
+    }
+
+    // if(!userInfo.value.address){
+    //     console.error("No address found");
+
+    //     return;
+    // }
+
     // /products/1/update/ 
     let url = `${BACKEND_URL}/products/new/`;
     let method: "POST" | "PUT" = "POST"
@@ -167,7 +182,7 @@ const productAddHandler = async (e: Event) => {
         method: method,
         body: formData,
         headers: {
-            "Authorization": `Bearer ${accessToken}`
+            "Authorization": `Bearer ${accessToken.value}`
         }
     });
     // console.log({ data: data.value, pending: pending.value, error: error.value, refresh: refresh, status: status.value });

@@ -30,7 +30,8 @@
 
             <div class="new-customer w-full md:w-2/5">
                 <h1 class="pt-8">New Customer</h1>
-                <p class="mt-8 mb-2">Sign up for early Sale access plus tailored new arrivals,trends and promotions. To opt
+                <p class="mt-8 mb-2">Sign up for early Sale access plus tailored new arrivals,trends and promotions. To
+                    opt
                     out,
                     click unsubscribe in our emails.</p>
                 <NuxtLink to="/user/signup">
@@ -44,16 +45,19 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useUserStore from '../../stores/UserStore';
-import useElementStore from '../../stores/ElementsStore';
-import { UserTokenInterface } from '../../types/UserType'
+import useUserStore from '@/stores/UserStore';
+import useElementStore from '@/stores/ElementsStore';
+import type { ISignInResponse } from '~/types/UserType';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/utils/constant';
 
 const oneDayInSeconds = 24 * 60 * 60; // 1 day = 24 hours * 60 minutes * 60 seconds
 
-const props = defineProps({
-    is_staff: Boolean
-});
 
+interface SignInProps {
+    is_staff?: boolean;
+}
+
+const props = defineProps<SignInProps>();
 
 const userStore = useUserStore();
 const elementStore = useElementStore();
@@ -62,46 +66,69 @@ const { userSignin, isAuthenticated } = storeToRefs(userStore);
 const { errorMessageList, successMessageList } = storeToRefs(elementStore);
 
 
-const signinHandler = async (e: Event) => {
+const signinHandler = async (_event: SubmitEvent): Promise<void> => {
     elementStore.resetErrorMessageList();
     elementStore.resetSuccessMessageList();
-    const validData = userStore.serializedUserSignin
-    if (validData) {
-        // https://youtrack.jetbrains.com/issue/WEB-58600
-        const { data, pending, error, refresh, status } = await useFetch<UserTokenInterface>(`${BACKEND_URL}/accounts/signin/`, {
-            method: "POST",
-            body: validData
-        });
-        if (status.value === 'success' && data.value) {
-            userStore.setIsAuthenticated(true);
-            const token = useCookie("token", {
-                maxAge: MAX_SIGNIN_COOKIE_AGE,
-                // httpOnly: true, // On https protocal, Need to set by server 
-            });
-            token.value = JSON.stringify(data.value);
 
-            // Fetch user with token we got
-            if (data.value.access) await userStore.fetchUser(data.value.access);
+    const validData = userStore.serializedUserSignin;
 
-            // document.cookie
-            if (props.is_staff === true) {
-                await navigateTo("/admin/");
-            } else {
-                await navigateTo("/user/dashboard/");
-            }
-        } 
-        
-        if (error.value) {
-            if (error.value.statusCode == 401) {
-                elementStore.setErrorMessageList(["Invalid credentials!"]);
-            } else {
-                elementStore.setErrorMessageList([JSON.stringify(error.value)]);
-            }
-        }
-    } else {
+    if (!validData) {
         elementStore.setErrorMessageList(["Invalid data!"]);
+        return;
     }
-}
+
+    const {
+        data,
+        error,
+        status,
+    } = await useFetch<ISignInResponse>(
+        `${BACKEND_URL}/accounts/signin/`,
+        {
+            method: "POST",
+            body: validData,
+        }
+    );
+
+    if (status.value !== "success" || !data.value) {
+        if (error.value?.statusCode === 401) {
+            elementStore.setErrorMessageList(["Invalid credentials!"]);
+        } else if (error.value) {
+            elementStore.setErrorMessageList([JSON.stringify(error.value)]);
+        }
+
+        return;
+    }
+
+    userStore.setIsAuthenticated(true);
+
+    const { access, refresh: refreshToken } = data.value;
+
+    const accessTokenCookie = useCookie<string>(ACCESS_TOKEN, {
+        maxAge: 60 * 15,
+        sameSite: "lax",
+        secure: import.meta.env.PROD,
+        path: "/",
+    });
+
+    accessTokenCookie.value = access;
+
+    const refreshTokenCookie = useCookie<string>(REFRESH_TOKEN, {
+        maxAge: 60 * 60 * 24 * 7,
+        sameSite: "lax",
+        secure: import.meta.env.PROD,
+        path: "/",
+    });
+
+    refreshTokenCookie.value = refreshToken;
+
+    await userStore.fetchUser(access);
+
+    await navigateTo(
+        props.is_staff
+            ? "/admin/"
+            : "/user/dashboard/"
+    );
+};
 </script>
 
 <style scoped></style>

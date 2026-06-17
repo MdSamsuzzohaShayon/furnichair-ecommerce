@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto px-2 static">
+    <div class="container mx-auto px-2 static min-h-80">
         <div class="flex justify-between flex-col md:flex-row user-dashboard">
             <div class="left-side-bar w-full md:w-2/12 sticky top-0 h-fit md:h-screen bg-white">
                 <ul class="w-full px-2 py-4 md:py-8 flex gap-4 flex-row md:flex-col flex-wrap">
@@ -55,11 +55,14 @@ const orderStore = useOrderStore();
 const { userInfo } = storeToRefs(userStore);
 const { userDashboardSidebar, selectedDSID, addAddress, showAddressList } = storeToRefs(elementStore);
 
-const token = useCookie("token");
-if (token.value) {
-    // @ts-ignore
-    const { access } = token.value;
-    await orderStore.fetchOrders(access);
+const accessToken = useCookie(ACCESS_TOKEN);
+if (!accessToken.value) {
+    console.error('There is no access token');
+
+}
+
+if (accessToken.value) {
+    await orderStore.fetchOrders(accessToken.value);
 }
 
 const addNewAddressComp=()=>{

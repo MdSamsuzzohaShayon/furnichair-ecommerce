@@ -36,19 +36,21 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useContactStore from '../../stores/ContactStore';
+import useContactStore from '@/stores/ContactStore';
 
 const contactStore = useContactStore();
 
 const { contactList } = storeToRefs(contactStore);
 
-const token = useCookie('token');
-console.log(token && token.value);
+const accessToken = useCookie(ACCESS_TOKEN);
 
-if (token && token.value) {
-    // @ts-ignore
-    await contactStore.fetchContacts(token.value.access);
+if (accessToken && accessToken.value) {
+    await contactStore.fetchContacts(accessToken.value);
+}else{
+    console.error("Access token does not have any value");
 }
+
+
 
 const previewContactMessage = (contactId: number) => {
     console.log(contactId);

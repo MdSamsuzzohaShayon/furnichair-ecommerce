@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useCategoryStore from '../../stores/CategoryStore';
+import useCategoryStore from '@/stores/CategoryStore';
 // https://dev.to/rafaelmagalhaes/pinia-and-nuxt-3-4ij5
 const categoryStore = useCategoryStore();
 const { categoryList } = storeToRefs(categoryStore);

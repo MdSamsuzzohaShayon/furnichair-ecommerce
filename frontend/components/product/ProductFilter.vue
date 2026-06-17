@@ -41,9 +41,9 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
-import useElementStore from '../../stores/ElementsStore';
-import useProductStore from '../../stores/ProductStore';
-import useSettingsStore from '../../stores/SettingsStore';
+import useElementStore from '@/stores/ElementsStore';
+import useProductStore from '@/stores/ProductStore';
+import useSettingsStore from '@/stores/SettingsStore';
 
 const productStore = useProductStore()
 const elementsStore = useElementStore();

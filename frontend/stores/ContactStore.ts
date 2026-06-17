@@ -15,13 +15,19 @@ const useContactStore = defineStore('contactStore', {
             // make preview true
         },
         async fetchContacts(accessToken: string) {
+
+            if (!accessToken) {
+                console.error('There is no access token');
+                return;
+
+            }
             const { data: contactData, refresh: refreshRequest, status: contactStatus } = await useFetch<ContactFetchedInterface[]>(`${BACKEND_URL}/contacts/list/`, {
                 key: `contacts-${new Date().getSeconds()}-${new Date().getMilliseconds()}`,
                 headers: {
                     "Authorization": "Bearer " + accessToken
                 }
             });
-            if(contactStatus.value === 'success' && contactData.value){
+            if (contactStatus.value === 'success' && contactData.value) {
                 this.contactList = contactData.value;
             }
         },

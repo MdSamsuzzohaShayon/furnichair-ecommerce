@@ -15,7 +15,7 @@
                 <tr v-for="wishlist in wishlistList">
                     <td class="p-2 text-center border border-teal-900/50">{{ wishlist.id }}</td>
                     <td class="p-2 text-center border border-teal-900/50">{{ wishlist.email }}</td>
-                    <td class="p-2 text-center border border-teal-900/50">{{ isoToDate(wishlist.created_at)}}</td>
+                    <td class="p-2 text-center border border-teal-900/50">{{ isoToDate(wishlist.created_at) }}</td>
                     <td class="p-2 text-center border border-teal-900/50">
                         <Icon class="pr-2" size="20" name="lucide:trash-2" color="red"
                             v-on:click.prevent="deleteWishlistHandler(wishlist.id)" />
@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia';
 
-import useWishlistStore from '../../stores/WishlistStore';
+import useWishlistStore from '@/stores/WishlistStore';
 
 const wishlistStore = useWishlistStore();
 
@@ -42,10 +42,19 @@ const deleteWishlistHandler = (pId: number | null) => {
     console.log("Delete wishlist -> ", pId);
 }
 
-const token = useCookie('token');
-if(token && token.value){
-    await wishlistStore.fetchWishlist(token.value.access);
+
+const accessToken = useCookie(ACCESS_TOKEN);
+if (!accessToken.value) {
+    console.error('There is no access token');
+
 }
+if (accessToken.value) {
+
+    await wishlistStore.fetchWishlist(accessToken.value);
+
+
+}
+
 
 </script>
 

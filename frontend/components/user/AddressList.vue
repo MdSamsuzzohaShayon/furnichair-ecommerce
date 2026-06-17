@@ -17,8 +17,8 @@
 </template>
 
 <script setup lang="ts">
-import useElementsStore from '../../stores/ElementsStore';
-import useUserStore from '../../stores/UserStore';
+import useElementsStore from '@/stores/ElementsStore';
+import useUserStore from '@/stores/UserStore';
 const { userInfo } = defineProps(['userInfo']);
 
 const elementStore = useElementsStore();

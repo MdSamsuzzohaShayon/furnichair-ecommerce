@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import useCategoryStore from "../../stores/CategoryStore";
-import useElementStore from "../../stores/ElementsStore";
+import useCategoryStore from "@/stores/CategoryStore";
+import useElementStore from "@/stores/ElementsStore";
 
 const categoryStore = useCategoryStore();
 const elementStore = useElementStore();
@@ -29,12 +29,14 @@ const updateCategoryHandler = async (catId: number) => {
 };
 
 const deleteCategoryHandler = async (catId: number) => {
-  console.log("Delete category -> ", catId);
-  const token = useCookie("token");
-  if (!token.value) return null;
-  // @ts-ignore
-  const { access: accessToken } = token.value;
-  // http://localhost:8000/api/products/categories/4/delete/
+  const accessToken = useCookie(ACCESS_TOKEN);
+
+  if(!accessToken.value){
+    console.error('There is no access token');
+    return;
+    
+  }
+
   const {
     data: catInfo,
     error: catError,
@@ -44,7 +46,7 @@ const deleteCategoryHandler = async (catId: number) => {
     method: "DELETE",
     key: `${catId}`,
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken.value}`,
     },
   });
   // await refreshRequest();

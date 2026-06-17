@@ -52,9 +52,9 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import useElementStore from "../../stores/ElementsStore";
-import useCategoryStore from "../../stores/CategoryStore";
-import { ProductCategoryInterface } from "../../types/ProductCategoryType";
+import useElementStore from "@/stores/ElementsStore";
+import useCategoryStore from "@/stores/CategoryStore";
+import type { ProductCategoryInterface } from "@/types/ProductCategoryType";
 
 const uploadFile = ref(null);
 const state = reactive({
@@ -72,17 +72,22 @@ const uploadFileChangeHandler = (e: Event) => {
   const fileInput = e.target as HTMLInputElement;
   // @ts-ignore
   state[`${fileInput.name}Name`] = fileInput.files[0].name;
-  if (fileInput.files) {
-    formData.set("categoryimage", fileInput.files[0]);
+  if (fileInput.files && fileInput.files.length > 0) {
+    formData.set("categoryimage", fileInput.files[0] as Blob);
   }
 };
 
 const categoryAddUpdateHandler = async (e: Event) => {
   elementStore.resetErrorMessageList();
   elementStore.resetSuccessMessageList();
-  const token = useCookie("token");
-  // @ts-ignore
-  const { access: accessToken } = token.value;
+  const accessToken = useCookie(ACCESS_TOKEN);
+
+  if(!accessToken.value){
+    console.error('There is no access token');
+    return;
+    
+  }
+
 
   let resStatus = null,
     resError = null;
@@ -96,7 +101,7 @@ const categoryAddUpdateHandler = async (e: Event) => {
         method: "PUT",
         body: formData,
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken.value}`,
         },
       }
     );
@@ -111,7 +116,7 @@ const categoryAddUpdateHandler = async (e: Event) => {
         method: "POST",
         body: formData,
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${accessToken.value}`,
         },
       });
       if (data.value) categoryStore.addNewCategory(data.value);
