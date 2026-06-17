@@ -1,93 +1,266 @@
-# Furniture ecommerce website
+# 🪑 FurniChair — Modern Furniture E-commerce Platform
 
- - [Tutorial](https://www.youtube.com/watch?v=jUsm_LV4_cE&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=8), [Tutorial 2](https://www.youtube.com/watch?v=EbLEyM9SyZQ&list=PLOLrQ9Pn6cay_cQkyg-WYYiJ_EKU8KWKh), [tutorial 3](https://www.youtube.com/watch?v=tujhGdn1EMI), [Tutorial 4](https://www.youtube.com/watch?v=xjMP0hspNLE&list=PL-51WBLyFTg1gPEHotYAhNAPsisChkyTc), [tutorial 5](https://www.youtube.com/watch?v=lo7lBD9ynVc&t=14s)
+🌐 **Live Demo:** [https://furnichair.webdevlab.org](https://furnichair.webdevlab.org)
 
-### Instructions
- - Create a table with all single data staff of the website such as logo, title, background image, offer, description, and more
- - Create a table for address
- - Make a loader in frontend to fetch data
- - On delete product or category, images should be deleted from the folder too
- - customize django rest framework user password validation
- - Add first name, last name for user
- - Refresh token is not rotating properly
- - Use forget password for user
- - Search by product and category
- - Filter products by different value
- - For frontend user gatsby js, and typescript, and materaize css
- - Gatsby tutorial - https://www.youtube.com/watch?v=e7sqKE0ODdI
- - Use jwt auth token with refresh token
- - Login user with **gmail or username** and **password**
- - One admin panel for admin and staff
- - One customer dashboard
- - Save tokens in client side cookies
+FurniChair is a full-stack, scalable furniture e-commerce platform built with modern technologies. It focuses on performance, clean UI/UX, and real-world production features like authentication, payments, and admin management.
 
-### Deployment
- - Docarize the application
- - Setup postgres database
- - Change environment variables
- - Create superuser in django
- - Remove default django admin 
+---
 
+## 🚀 Features
 
- - Setup
- ```
- mkdir furniture-ecom
- cd furniture-ecom/
- python3 -m venv virtual-env
- source virtual-env/bin/activate
- clear
- pip install Django==4.2.3
- django-admin startproject drfecom
- cd drfecom/
- ./manage.py runserver
- ```
- - Secret key with shell
- ```
- python3 manage.py shell
- >>> from django.core.management.utils import get_random_secret_key
- >>> print(get_random_secret_key())
- ```
- - Testing the project
- ```
- pip install pytest
- pytest --help
- pip install pytest-django
- pytest
- ```
- - Use `black` for formatting code
- - Use `flake8` for linting the code
- - Create super user `./manage.py createsuperuser`
- - Create schema for api documentation `./manage.py spectacular --file schema.yml`
- - Running tests with coverage
- ```
- coverage
- coverage html
- coverage run -m pytest
- pytest --cov
- ```
+### 🛍️ Customer Experience
 
-### Inspirations
- - Design -> https://99grid.com/ , https://demo.minimog.co/ , 
- - ecommerce_api - https://github.com/thomas545/ecommerce_api
- - django-ecommerce-api - https://github.com/earthcomfy/django-ecommerce-api/tree/master
- - store-engine - https://github.com/open-ecommerce-api/store-engine/tree/develop
- - The original headless storefront theme for Swell (Nuxt/Vue) - https://github.com/swellstores/origin-theme/tree/master
- - Nuxt 3 and Vue 3 headless eCommerce site with WooCommerce backend and Algolia search - https://github.com/w3bdesign/nuxtjs-woocommerce/tree/master
- - The project utilizes Nuxt3 to create a scalable, efficient, and modern web application. - https://github.com/TutorFx/nuxt3-ecommerce
+* Browse products with category & search support
+* Advanced filtering system
+* Add to cart & view total cart items in real-time
+* Smooth page transitions & animations
+* Optimized image rendering on product pages
+* SEO optimized pages for better discoverability
 
- - Left at __https://www.youtube.com/watch?v=ktuOUaOyMmo&list=PLOLrQ9Pn6cawinBJbH5d9IfloO9RRPMiq&index=31__
+### 🔐 Authentication & Security
 
-### Reference
- - serializing Objects - > https://www.django-rest-framework.org/api-guide/serializers/#serializing-objects
- - Serializers allow complex data such as querysets and model instances to be converted to native Python datatypes that can then be easily rendered into JSON, XML or other content types.
- - The ModelSerializer class provides a shortcut that lets you automatically create a Serializer class with fields that correspond to the Model fields.
- - Field-level validation -> https://www.django-rest-framework.org/api-guide/serializers/#field-level-validation
- - Object-level validation -> https://www.django-rest-framework.org/api-guide/serializers/#object-level-validation
- - The following example demonstrates how you might handle creating a user with a nested profile object.
- - .create() and .update() - Override either or both of these to support saving instances.
- - Although Python provides a mail sending interface via the smtplib module, Django provides a couple of light wrappers over it. https://docs.djangoproject.com/en/4.2/topics/email/
- - @classmethod Transform a method into a class method. -> https://docs.python.org/3/library/functions.html?highlight=property#classmethod
- - [decorators in the standard library](https://wiki.python.org/moin/Decorators)
- - [Complete Authentication](https://github.com/celiao/django-rest-authemail)
- - [customize the claims contained in web tokens which are generated by the TokenObtainPairView and TokenObtainSlidingView views, create a subclass for the desired view as well as a subclass for its corresponding serializer. ](https://django-rest-framework-simplejwt.readthedocs.io/en/latest/customizing_token_claims.html)
- - 
+* JWT-based authentication with refresh tokens
+* Login using **email or username**
+* Forgot password functionality
+* Secure token storage (cookies)
+* Custom password validation (Django)
+
+### 🧑‍💼 Admin & Dashboard
+
+* Unified admin panel for **admin + staff**
+* Product & category management
+* Status control (publish/unpublish)
+* Automatic image cleanup on delete ✅
+* Customer dashboard (basic)
+
+### ⚙️ Performance & UX
+
+* Lazy loading & preload pages
+* API loading indicators
+* “Load More” pagination
+* Frontend data loaders
+* Optimized API handling
+
+---
+
+## 🧱 Tech Stack
+
+| Layer    | Technology                             |
+| -------- | -------------------------------------- |
+| Backend  | Django + Django REST Framework         |
+| Frontend | Nuxt.js (Vue 3)                        |
+| Database | SQLite (dev), PostgreSQL (recommended) |
+| Storage  | Cloudinary                             |
+| Auth     | JWT                                    |
+| Payments | SSLCommerz, bKash                      |
+| DevOps   | Docker, Nginx                          |
+
+---
+
+## 📦 Project Structure
+
+```
+furnichair-ecommerce/
+│
+├── backend/      # Django REST API
+├── frontend/     # Nuxt.js frontend
+├── docker/       # Docker configurations
+└── README.md
+```
+
+---
+
+## ⚡ Getting Started
+
+### 1️⃣ Clone the Repository
+
+```
+git clone https://github.com/MdSamsuzzohaShayon/furnichair-ecommerce.git
+cd furnichair-ecommerce
+```
+
+---
+
+## 🔧 Backend Setup (Django)
+
+### 📌 Environment Variables
+
+Create `.env` file:
+
+```
+cp .env.example .env
+```
+
+Update all required values.
+
+---
+
+### 🐳 Run with Docker
+
+```
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+```
+
+---
+
+### 💻 Run without Docker
+
+```
+cd backend
+
+python -m venv .venv
+source .venv/bin/activate
+
+pip install -r requirements.txt
+
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver
+```
+
+📄 API Docs: [http://localhost:8000/api/docs/](http://localhost:8000/api/docs/)
+
+---
+
+## 🎨 Frontend Setup (Nuxt.js)
+
+```
+cd frontend
+
+cp .env.example .env
+npm install
+npm run dev
+```
+
+🌐 App: [http://localhost:3000/](http://localhost:3000/)
+
+---
+
+## 💳 Payment Integration
+
+### SSLCommerz
+
+* Sandbox & Production support
+* Docs: [https://developer.sslcommerz.com/doc/v4/](https://developer.sslcommerz.com/doc/v4/)
+* Python SDK: [https://github.com/sslcommerz/SSLCommerz-Python](https://github.com/sslcommerz/SSLCommerz-Python)
+
+### bKash
+
+* Tokenized checkout support
+* Requires merchant account
+* Docs: [https://developer.bka.sh/docs](https://developer.bka.sh/docs)
+
+---
+
+## 🐳 Docker Tips
+
+* Copy files from container:
+
+```
+docker cp <container>:<path> <destination>
+```
+
+* Restart services:
+
+```
+docker compose restart nginx
+```
+
+* Access container:
+
+```
+docker exec -it <container_name> sh
+```
+
+---
+
+## 🚀 Deployment Guide
+
+1. Setup Docker environment (dev & prod)
+2. Configure environment variables
+3. Build & run containers:
+
+```
+docker compose up -d --build
+```
+
+4. Run migrations:
+
+```
+docker compose run backend python manage.py migrate
+```
+
+5. Create superuser:
+
+```
+docker compose run backend python manage.py createsuperuser
+```
+
+6. Setup PostgreSQL
+7. Configure CI/CD (GitHub Actions recommended)
+
+---
+
+## 🧪 Testing & Code Quality
+
+```
+pip install pytest pytest-django coverage
+pytest
+pytest --cov
+coverage html
+```
+
+### Code Standards
+
+* Format: `black`
+* Linting: `flake8`
+
+---
+
+## 📚 Learning Resources
+
+* [Django REST Framework Docs](https://www.django-rest-framework.org/)
+* [Cloudinary Django Integration](https://cloudinary.com/documentation/django_integration)
+* [JWT Customization](https://django-rest-framework-simplejwt.readthedocs.io/)
+
+---
+
+## 🎯 Roadmap / TODO
+
+* Improve refresh token rotation
+* Full customer dashboard
+* Supabase migration option
+* Better analytics & reporting
+* Enhanced SEO automation
+* Centralized config table (logo, banners, etc.)
+
+---
+
+## 💡 Inspirations
+
+* [https://99grid.com/](https://99grid.com/)
+* [https://demo.minimog.co/](https://demo.minimog.co/)
+* [https://github.com/thomas545/ecommerce_api](https://github.com/thomas545/ecommerce_api)
+* [https://github.com/swellstores/origin-theme](https://github.com/swellstores/origin-theme)
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+
+---
+
+## 👨‍💻 Author
+
+**Md Samsuzzoha Shayon**
+Founder of *Its Sports Time*
+Full Stack Developer (Django, React, Nuxt, AWS)
+
+---
+
+## ⭐ Support
+
+If you like this project, consider giving it a ⭐ on GitHub — it helps a lot!
+
+---

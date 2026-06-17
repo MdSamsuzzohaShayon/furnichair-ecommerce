@@ -1,0 +1,18 @@
+/* 
+ * Style specific page start  
+ * =============================================================================================================
+ */
+ .index-page-content .single-arrival-item{
+    height: 60vh;
+ }
+.index-page-content .arrival-item-img{
+    height: 60vh;
+}
+.user-dashboard, .admin-panel{
+    min-height: unset;
+}
+
+/* 
+ * Style specific page end  
+ * =============================================================================================================
+ */

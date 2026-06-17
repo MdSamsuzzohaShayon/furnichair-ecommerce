@@ -4,6 +4,8 @@
 
 ### Instructions
  - On delete product or category, images should be deleted from the folder too
+ - A price for a category and a price for a place
+ - Generate Sku code *product_category-product_title-product_variant-product_size*
  - customize django rest framework user password validation
  - Add first name, last name for user
  - Refresh token is not rotating properly
@@ -17,6 +19,14 @@
  - One admin panel for admin and staff
  - One customer dashboard
  - Save tokens in client side cookies
+
+### BKash API
+ - BKash overview - https://www.youtube.com/watch?v=i8TT8-DAF5Q
+ - Code - https://www.youtube.com/watch?v=B4xM7rBk2R8&list=PLD11cPzGpfKT1o2OTydIecmyHII5tZl_F&index=2
+ - Need a merchant account
+ - Request a new product
+ - Tokenized checkout overflow - https://developer.bka.sh/docs/tokenized-checkout-overview
+ - Token Management Overview - https://developer.bka.sh/docs/token-management-overview-3
 
 ### Deployment
  - Docarize the application
@@ -62,6 +72,12 @@
  coverage run -m pytest
  pytest --cov
  ```
+ - For seeding data
+```
+python manage.py seed --flush
+```
+### See documentation
+ __http://127.0.0.1:8000/api/docs/__
 
 ### Inspirations
  - https://99grid.com/
@@ -78,6 +94,7 @@
 ### Reference
  - serializing Objects - > https://www.django-rest-framework.org/api-guide/serializers/#serializing-objects
  - Serializers allow complex data such as querysets and model instances to be converted to native Python datatypes that can then be easily rendered into JSON, XML or other content types.
+ - Django models overriding 
  - The ModelSerializer class provides a shortcut that lets you automatically create a Serializer class with fields that correspond to the Model fields.
  - Field-level validation -> https://www.django-rest-framework.org/api-guide/serializers/#field-level-validation
  - Object-level validation -> https://www.django-rest-framework.org/api-guide/serializers/#object-level-validation

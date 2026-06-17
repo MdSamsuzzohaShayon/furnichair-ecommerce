@@ -1,0 +1,59 @@
+version: '3.9'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile.dev
+      args:
+        - PYENV=development
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env.dev
+    command: python manage.py runserver 0.0.0.0:8000
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+      - "24678:24678"
+    command: npm run dev
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
+    ports:
+      - "42080:80"
+  
+  postgres_db:
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=Test1234
+      - POSTGRES_DB=testdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  adminer:
+    image: adminer
+    container_name: adminer_con
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres_db
+
+    
+volumes:
+  postgres_data:
+
+networks:
+  private-net:
+    driver: bridge
+  public-net:
+    driver: bridge

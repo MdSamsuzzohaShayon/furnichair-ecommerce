@@ -1,4 +1,4 @@
-interface ProductCategoryInterface {
+export interface ProductCategoryInterface {
     id: number;
     name: string;
     image: string;
@@ -7,10 +7,8 @@ interface ProductCategoryInterface {
     rght: number;
     tree_id: number;
     level: number;
-    parent: null | number
+    parent: null | number;
+    shipping_charge: number;
 }
 
 
-export {
-    ProductCategoryInterface
-}

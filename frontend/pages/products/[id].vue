@@ -1,25 +1,32 @@
 <template>
-    <div>
+    <div class="min-h-80">
+
         <Head>
-            <Title>Shakil Furniture | {{ product.title }}</Title>
-            <Meta name="description" :content="product.description" />
+            <Title>Shakil Furniture | {{ productSingle.title }}</Title>
+            <Meta name="description" :content="productSingle.description" />
+            <Meta name="keywords" :content="`${productSingle.title}, ${productSingle.title} features, benefits, specifications, buy ${productSingle.title}, Ecommerce, Shopping, Online Store`" />
         </Head>
-        <ProductDetail v-bind:product="product" />
+        <ProductDetail v-bind:product="productSingle" />
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { storeToRefs } from 'pinia';
+import useProductStore from '../../stores/ProductStore';
+
 const { id } = useRoute().params;
-const uri = "http://localhost:8000/api/products/" + id + "/";
-const {data: product} = await useFetch(uri, {key: id});
 
-if (!product.value){
-    throw createError({statusCode: 404, statusMessage: "Product not found", fetal: true});
-}
+const productStore = useProductStore();
 
-definePageMeta({
-    layout: 'products'
-});
+await productStore.fetchSingleProduct(id);
+
+const { productSingle } = storeToRefs(productStore);
+
+
+
+// definePageMeta({
+//     layout: 'products'
+// });
 
 </script>
 

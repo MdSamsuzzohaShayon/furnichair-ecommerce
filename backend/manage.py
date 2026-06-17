@@ -3,16 +3,18 @@
 import os
 import sys
 
-from drfecom.settings import base
+# from drfecom.settings import base
 
 
 def main():
     """Run administrative tasks."""
 
-    if base.DEBUG:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drfecom.settings.local')
-    else:
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drfecom.settings.production')
+    # if base.DEBUG:
+    #     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drfecom.settings.local')
+    # else:
+    #     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drfecom.settings.production')
+
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'drfecom.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

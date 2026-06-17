@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - PYENV=production
+    env_file:
+      - ./backend/.env
+    # Use gunicorn here
+    # command: python manage.py runserver 0.0.0.0:8000
+    # gunicorn drfecom.wsgi:application -c gunicorn_config.py &
+    command: ["gunicorn", "drfecom.wsgi:application", "-c", "gunicorn_config.py"]
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    ports:
+      - "3000:3000"
+      - "24678:24678"
+    command: node .output/server/index.mjs
+
+  nginx:
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      # - ./nginx/nginx.conf:/etc/nginx/sites-available/default
+    ports:
+      - "80:80"
+  
+  postgres_db:
+    environment:
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=Test1234
+      - POSTGRES_DB=testdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    
+volumes:
+  postgres_data:
+
+networks:
+  private-net:
+    driver: bridge
+  public-net:
+    driver: bridge

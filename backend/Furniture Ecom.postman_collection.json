@@ -1,0 +1,1306 @@
+{
+	"info": {
+		"_postman_id": "e5d978fb-f233-4aef-bb90-4f033a06f6dd",
+		"name": "Furniture Ecom",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "14178218"
+	},
+	"item": [
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Category Add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Sofa",
+									"type": "text"
+								},
+								{
+									"key": "categoryimage",
+									"type": "file",
+									"src": "/home/shayon/Downloads/Sofa.jpg"
+								},
+								{
+									"key": "extra",
+									"value": "this is extra",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "shipping_charge",
+									"value": "720",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/categories/new/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"categories",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product Add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "Product Table 1",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "24",
+									"type": "text"
+								},
+								{
+									"key": "discount_price",
+									"value": "15",
+									"type": "text"
+								},
+								{
+									"key": "total_stock",
+									"value": "5",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "a chair is going to add",
+									"type": "text"
+								},
+								{
+									"key": "category",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "image1file",
+									"type": "file",
+									"src": "/home/shayon/Downloads/table-product-1.jpg"
+								},
+								{
+									"key": "image2file",
+									"type": "file",
+									"src": "/home/shayon/Downloads/table-product-2.jpg"
+								},
+								{
+									"key": "image4file",
+									"type": "file",
+									"src": "/home/shayon/Downloads/table-product-3.jpg"
+								},
+								{
+									"key": "image3file",
+									"type": "file",
+									"src": "/home/shayon/Pictures/free-photo-of-city-landscape-water-skyline.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products/new/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"new",
+								""
+							]
+						},
+						"description": "title = models.CharField(blank=False, null=False, unique=True, max_length=100) price = models.DecimalField(max_digits=10, decimal_places=0, blank=False, null=False) discount_price = models.DecimalField(max_digits=10, decimal_places=0) # image_list = models.CharField # Make one to many relationship total_stock = models.DecimalField(max_digits=10, decimal_places=0) desc = models.TextField() category = TreeForeignKey( Category, related_name=\"product_category\", on_delete=models.SET_NULL, null=True, blank=True ) image = models.ImageField(upload_to=upload_to, blank=True, null=True) # category = TreeForeignKey(\"Category\", on_delete=models.SET_NULL, null=True, blank=True) created_at"
+					},
+					"response": []
+				},
+				{
+					"name": "Product Retrieve",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "title",
+									"value": "title 8 update",
+									"type": "text"
+								},
+								{
+									"key": "price",
+									"value": "27",
+									"type": "text"
+								},
+								{
+									"key": "image1",
+									"type": "file",
+									"src": "/home/shayon/Pictures/Screenshot from 2023-04-27 20-39-09.png",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/api/products/1/update/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"1",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product List Search",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								""
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "desc",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product List Filters",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/filters/?total_stock=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"filters",
+								""
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Product 1 sofa",
+									"disabled": true
+								},
+								{
+									"key": "price",
+									"value": "20",
+									"disabled": true
+								},
+								{
+									"key": "total_stock",
+									"value": "2"
+								},
+								{
+									"key": "category",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product List By Category",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/categories/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"categories",
+								"2"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "Product 1 sofa",
+									"disabled": true
+								},
+								{
+									"key": "total_stock",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "category",
+									"value": "1",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/2/delete/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"2",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/products/categories/list/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"products",
+								"categories",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "Chair",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "image",
+									"type": "file",
+									"src": "/home/shayon/Pictures/sofa.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/categories/3/update/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"categories",
+								"3",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Category Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/categories/4/delete/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"categories",
+								"4",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivery Place Add",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"price\": 700,\n    \"place\": \"Natore\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/charge/new/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"charge",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivery Place Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"place\": \"Natore\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/delivery/2/update/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"delivery",
+								"2",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivery Place List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/delivery/list/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"delivery",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivery Place Retrive",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/delivery/1/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"delivery",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delivery Place Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/products/delivery/2/delete/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"products",
+								"delivery",
+								"2",
+								"delete",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Accounts",
+			"item": [
+				{
+					"name": "User Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Md\",\n    \"last_name\": \"Shayon\",\n    \"email\": \"user@example.com\",\n    \"password\": \"Test1234\",\n    \"confirm_password\": \"Test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/signup/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"signup",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Verify",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"verify_token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiUkVHSVNURVIiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpZCI6MiwiZXhwIjoxNjk1Mzg4ODkwfQ.98AY-OELOnZOUM00ZD1iJCbuSK_JhTENNzCbRobtUeo\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/verify/{{verify_token}}/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"verify",
+								"{{verify_token}}",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"user@example.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/forgotpassword/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"forgotpassword",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"reset_token\", \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiUkVTRVRfUEFTU1dPUkQiLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJpZCI6NSwiZXhwIjoxNjkwMjA4MjA5fQ.JiIMzAg7a9DK32HMjzGGK_bA3OujD4cKQrNsme5b0BI\");"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"Test4321\",\n    \"confirm_password\": \"Test4321\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/resetpassword/{{reset_token}}/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"resetpassword",
+								"{{reset_token}}",
+								""
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mdshayon0@gmail.com\",\n    \"password\": \"Test1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/signin/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"signin",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "refresh",
+									"value": "{{REFRESH_TOKEN}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/token/refresh/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"token",
+								"refresh",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Retrieve a user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/detail/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"detail",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/list/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User update view",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\": \"Md\",\n    \"last_name\": \"Shayon u\",\n    \"is_staff\": true,\n    \"address\": {\n        \"id\": 1, // If we set id the address will update\n        \"city\": \"Dhaka\",\n        \"country\": \"BD\",\n        \"phone\": 123,\n        \"area\": \"58-C West Raja Bazaar\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/accounts/2/update/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"accounts",
+								"2",
+								"update",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Order create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"product\": 1,\n  \"address\": 1,\n  \"quantity\": 1,\n  \"city\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/orders/new/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"orders",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/orders/list/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"orders",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "order list of a user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/orders/user/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"orders",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/orders/cancel/11/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"orders",
+								"cancel",
+								"11",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Order Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"total\": 125,\n    \"status\": \"SG\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/orders/update/1/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"orders",
+								"update",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "Contact Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"n5\",\n    \"email\": \"n5@gmail.com\",\n    \"message\": \"This is message 5.1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/contacts/new/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"contacts",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact Preview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/contacts/update/5/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"contacts",
+								"update",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/contacts/list/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"contacts",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Wishlist",
+			"item": [
+				{
+					"name": "Wishlist Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"e2@g.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BACKEND_URL}}/wishlist/new/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"wishlist",
+								"new",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wishlist list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/wishlist/list/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"wishlist",
+								"list",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Wishist Preview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BACKEND_URL}}/wishlist/update/1/",
+							"host": [
+								"{{BACKEND_URL}}"
+							],
+							"path": [
+								"wishlist",
+								"update",
+								"1",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BACKEND_URL",
+			"value": "http://localhost:8000/api",
+			"type": "string"
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1NDQ3MTE4LCJpYXQiOjE2OTU0NDQ5MjUsImp0aSI6ImMzNGZhYzk1NDNkYjQyNzhhZWFmODZkMmMzNTE2MTRlIiwidXNlcl9pZCI6MX0.51AFjsH1Gr1Pn8wfZndAnykVz6b28CisfK7K4HNPpQg",
+			"type": "string"
+		},
+		{
+			"key": "REFRESH_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY5NTUzMTMyNSwiaWF0IjoxNjk1NDQ0OTI1LCJqdGkiOiI4MDZmMjU4MDlhOGU0MjhhOTY2Y2FmYjVhOWIxYWI2ZCIsInVzZXJfaWQiOjF9.kCNm7alxpniF6kqmzlXrEYYTtL_zYSxlKuKuMtFU2zU",
+			"type": "string"
+		}
+	]
+}

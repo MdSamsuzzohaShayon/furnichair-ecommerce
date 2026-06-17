@@ -1,49 +1,43 @@
 <template>
-    <div class="container mx-auto px-2 bg-teal-100">
-        <h1>Register</h1>
-        <form class="flex flex-col gap-4" v-on:submit.prevent="signupHandler">
-            <div class="input-group flex justify-between gap-4">
-                <div class="input-sub-group w-1/2">
-                    <label for="user-first-name" class="text-teal-900">First Name</label>
+    <div class="container mx-auto px-2 flex justify-center min-h-80">
+        <div class="sign-in w-full md:w-2/5">
+            <h1 class="pt-8">Register</h1>
+            <Message />
+            <form class="flex flex-col gap-4 mt-8" v-on:submit.prevent="signupHandler">
+                <div class="input-group w-full">
                     <input required="true" type="text" id="user-first-name"
-                        class="bg-real-100 text-teal-950 outline-0 text-3xl border border-teal-950 w-full px-1"
-                        v-model="userSignup.first_name">
+                        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
+                        placeholder="First Name" v-model="userSignup.first_name">
                 </div>
-                <div class="input-sub-group w-1/2">
-                    <label for="user-last-name" class="text-teal-900">Last Name</label>
+                <div class="input-group w-full">
                     <input required="true" type="text" id="user-last-name"
-                        class="bg-real-100 text-teal-950 outline-0 text-3xl border border-teal-950 w-full px-1"
-                        v-model="userSignup.last_name">
+                        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
+                        placeholder="Last Name" v-model="userSignup.last_name">
                 </div>
-            </div>
-            <div class="input-group w-full">
-                <label for="user-email" class="text-teal-900">Email</label>
-                <input required="true" type="email" id="user-email"
-                    class="bg-real-100 text-teal-950 outline-0 text-3xl border border-teal-950 w-full px-1"
-                    v-model="userSignup.email">
-            </div>
-            <div class="input-group flex justify-between gap-4">
-                <div class="input-sub-group w-1/2">
-                    <label for="user-password" class="text-teal-900">Password</label>
+                <div class="input-group w-full">
+                    <input required="true" type="email" id="user-email"
+                        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
+                        placeholder="Email" v-model="userSignup.email">
+                </div>
+                <div class="input-group w-full">
                     <input required="true" type="password" id="user-password"
-                        class="bg-real-100 text-teal-950 outline-0 text-3xl border border-teal-950 w-full px-1"
-                        v-model="userSignup.password">
+                        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
+                        placeholder="Password" v-model="userSignup.password">
                 </div>
-                <div class="input-sub-group w-1/2">
-                    <label for="user-confirm-password" class="text-teal-900">Confirm Password</label>
+                <div class="input-group w-full">
                     <input required="true" type="password" id="user-confirm-password"
-                        class="bg-real-100 text-teal-950 outline-0 text-3xl border border-teal-950 w-full px-1"
-                        v-model="userSignup.confirm_password">
+                        class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 w-full px-1 placeholder:text-teal-950/50"
+                        placeholder="Confirm Password" v-model="userSignup.confirm_password">
                 </div>
-            </div>
-            <div class="input-group w-full">
-                <button class="bg-teal-900 text-teal-50 border-1 border-teal-950 px-5 py-2" type="submit">Register</button>
-            </div>
-        </form>
-        <NuxtLink to="/user/signin">Already have an account? login.</NuxtLink>
-        <br>
-        <p class="text-red-900 px-4 py-2 capitalize" v-for="message in errorMessageList">{{ message }}</p>
-        <p class="text-teal-900 px-4 py-2 capitalize" v-for="message in successMessageList">{{ message }}</p>
+                <div class="input-group w-full">
+                    <button class="bg-teal-900 text-teal-50 border-1 border-teal-950 px-5 py-2 w-full font-bold"
+                        type="submit">Register</button>
+                </div>
+                <div class="input-group w-full flex flex-col">
+                    <NuxtLink to="/user/signin" class="underline">Already have an account? login.</NuxtLink>
+                </div>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -52,10 +46,16 @@ import { storeToRefs } from 'pinia';
 import useUserStore from '../../stores/UserStore';
 import useElementStore from '../../stores/ElementsStore';
 
+// Meta
+definePageMeta({
+  middleware: ["auth"]
+  // or middleware: 'auth'
+});
+
 const userStore = useUserStore();
 const elementStore = useElementStore();
 
-const { userSignup, isAuthenticated } = storeToRefs(userStore);
+const { userSignup } = storeToRefs(userStore);
 const { errorMessageList, successMessageList } = storeToRefs(elementStore);
 
 const signupHandler = async (e: Event) => {
@@ -69,7 +69,7 @@ const signupHandler = async (e: Event) => {
             method: "POST",
             body: validData
         });
-        console.log({ data: data.value, pending: pending.value, error: error.value, refresh: refresh, status: status.value });
+        // console.log({ data: data.value, pending: pending.value, error: error.value, refresh: refresh, status: status.value });
         if (data.value) {
             if (status.value === 'success') {
                 elementStore.setSuccessMessageList(Object.values(data.value));
@@ -81,11 +81,7 @@ const signupHandler = async (e: Event) => {
     }
 }
 
-onMounted(()=>{
-    if(isAuthenticated.value === true){
-        navigateTo('/user/dashboard/');
-    }
-});
+
 
 </script>
 

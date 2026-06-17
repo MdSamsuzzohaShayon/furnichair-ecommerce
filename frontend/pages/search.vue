@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <h1>{{ productList.length }} items found</h1>
-        <button class="filter-bar-control bg-teal-900 text-teal-50 flex" v-on:click.prevent="elementStore.openFilterBar()">
+    <div class="container mx-auto px-2 min-h-80">
+        <h1 class="mt-8">{{ productList.length }} items found</h1>
+        <button class="bg-white text-teal-950 outline-0 px-3 py-2 border border-teal-950/25 px-1 placeholder:text-teal-950/50 mt-4 mb-4" v-on:click.prevent="elementStore.openFilterBar()">
             Filter 
             <Icon name="clarity:filter-line" size="30" />
         </button>

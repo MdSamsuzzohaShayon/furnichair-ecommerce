@@ -1,9 +1,9 @@
 <template>
-    <div>
-        <NuxtLink to="/user/signin">Login</NuxtLink>
+    <div class="container mx-auto px-2 min-h-80 mt-8">
+        <NuxtLink to="/user/signin" class="text-3xl font-bold">Login</NuxtLink>
 
-        <p class="text-red-900 px-4 py-2" v-for="message in errorMessageList">{{ message }}</p>
-        <p class="text-teal-900 px-4 py-2" v-for="message in successMessageList">{{ message }}</p>
+        <p class="text-red-900 py-2 mt-4" v-for="message in errorMessageList">{{ message }}</p>
+        <p class="text-teal-900 py-2 mt-4" v-for="message in successMessageList">{{ message }}</p>
     </div>
 </template>
 
@@ -11,6 +11,10 @@
 import { storeToRefs } from 'pinia';
 import useElementStore from '../../../stores/ElementsStore';
 const token = useRoute().params.token;
+
+definePageMeta({
+    layout: 'minimal'
+});
 
 const elementStore = useElementStore();
 const { errorMessageList, successMessageList } = storeToRefs(elementStore);

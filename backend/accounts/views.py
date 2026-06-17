@@ -7,14 +7,14 @@ from datetime import datetime, timedelta
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView, ListAPIView
+from rest_framework.generics import CreateAPIView, GenericAPIView, RetrieveAPIView, ListAPIView, UpdateAPIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .serializers import SignupSerializer, PasswordForgotSerializer, PasswordResetSerializer, CustomTokenObtainPairSerializer, UserSerializer
+from .serializers import SignupSerializer, PasswordForgotSerializer, PasswordResetSerializer, CustomTokenObtainPairSerializer, UserSerializer, UserUpdateSerializer, AddressSerializer
 from .models import User
 from . import emails
 from drfecom.keys import TokenTypes
-from .mixins import GeneralUserPermissionMixin, IsStaffEditorPermission
+from .mixins import GeneralUserPermissionMixin, StaffEditorPermissionMixin
 
 """
 Used for create-only endpoints. Provides a post method handler.
@@ -57,6 +57,13 @@ class SignupView(CreateAPIView):
     
 
 class VerifySignupView(GenericAPIView):
+    serializer_class = UserSerializer
+    # def perform_create(self, serializer):
+        # queryset = SignupRequest.objects.filter(user=self.request.user)
+        # if queryset.exists():
+        #     raise ValidationError('You have already signed up')
+        # serializer.save(user=self.request.user)
+
     def put(self, request, token):
         try:
             decoded_token = jwt.decode(token, os.getenv('JSON_TOKEN_SECRET'), algorithms=["HS256"])
@@ -118,13 +125,6 @@ class SigninTokenObtainPairView(TokenObtainPairView):
 
 class UserObtainView(GeneralUserPermissionMixin, RetrieveAPIView):
     serializer_class = UserSerializer
-
-
-    # def get(self, request, *args, **kwargs):
-    #     print(request.headers['Authorization'].split(' ')[1])
-    #     decoded_token = jwt.decode(request.headers['Authorization'].split(' ')[1], os.getenv('JSON_TOKEN_SECRET'), algorithms=["HS256"])
-    #     user_instance = User.objects.filter(id =decoded_token['user_id'])
-    #     return Response({'user': user_instance}, status=status.HTTP_200_OK)
     
     def get_queryset(self):
         decoded_token = jwt.decode(self.request.headers['Authorization'].split(' ')[1], os.getenv('JSON_TOKEN_SECRET'), algorithms=["HS256"])
@@ -137,7 +137,33 @@ class UserObtainView(GeneralUserPermissionMixin, RetrieveAPIView):
         obj = get_object_or_404(queryset, **filter)
         return obj
     
-class UserListView(IsStaffEditorPermission, ListAPIView):
+class UserUpdateView( GeneralUserPermissionMixin, UpdateAPIView):
+    serializer_class = UserUpdateSerializer
+    queryset = User.objects.all()
+    # update user with a new address and update address data inside UpdateAPIView
+    def perform_update(self, serializer):
+        user = self.get_object()
+        address_data = self.request.data.get('address', {})
+
+        instance = serializer.save()
+        address_data['user'] = user.id
+
+        # Update or create address
+        address_serializer = None
+        if address_data.get('id') and address_data.get('id') is not None and address_data.get('id') != '':
+            address_qs = user.address.filter(id=address_data.get('id'))
+            if address_qs.exists():
+                address = address_qs.first()
+                address_serializer = AddressSerializer(address, data=address_data, partial=True)
+            else:
+                address_serializer = AddressSerializer(data=address_data)
+        else:
+            address_serializer = AddressSerializer(data=address_data)
+        
+        address_serializer.is_valid(raise_exception=True)
+        address_serializer.save()
+    
+class UserListView(StaffEditorPermissionMixin, ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
     

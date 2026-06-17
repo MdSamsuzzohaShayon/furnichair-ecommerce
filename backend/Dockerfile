@@ -1,0 +1,27 @@
+FROM python:3.10-alpine
+
+WORKDIR /app
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apk update \
+    && apk add --no-cache python3-dev libpq \
+    && apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+
+RUN pip install --upgrade setuptools \
+    && pip install --upgrade pip \
+    && pip install -r requirements.txt 
+
+RUN export PYENV=production
+
+RUN mkdir -p /opt/djangoprojects/reports/bin/
+
+
+COPY . .
+
+# Specify the command to run on container start
+# CMD ["gunicorn", "-b", ":8000", "myproject.wsgi:application"]

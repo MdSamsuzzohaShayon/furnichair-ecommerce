@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from django.db import IntegrityError
-from .models import User
+from .models import User, Address
 from drfecom.keys import TokenTypes
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
@@ -49,12 +49,7 @@ class SignupSerializer(serializers.Serializer):
         instance.email = validated_data.get('email', instance.email)
         instance.set_password(validated_data.get('password'))
         instance.save()
-        return instance
-    
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id', 'email', 'first_name', 'last_name', 'is_admin', 'is_validated', 'is_admin', 'is_staff', 'is_active']    
+        return instance 
 
 
 class PasswordForgotSerializer(serializers.Serializer):
@@ -109,3 +104,34 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['username'] = user.username
         return token
 
+"""
+Relational fields are used to represent model relationships.
+https://www.django-rest-framework.org/api-guide/relations/
+"""
+class UserUpdateSerializer(serializers.ModelSerializer):
+    address = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    email = serializers.EmailField(read_only=True)
+    first_name = serializers.CharField(required=False)
+    last_name = serializers.CharField(required=False)
+    class Meta:
+        model = User 
+        fields = ['id', 'email', 'first_name', 'last_name', 'address']   
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        fields = "__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+    # address = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    # address = serializers.SlugRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     slug_field='city'
+    #  )
+
+    address = AddressSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'first_name', 'last_name', 'is_validated', 'is_admin', 'is_staff', 'is_active', 'address']   
